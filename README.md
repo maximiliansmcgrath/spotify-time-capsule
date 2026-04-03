@@ -1,4 +1,4 @@
-# 🎵 Spotify Time Capsule
+# Spotify Time Capsule
 
 **"On This Day" musical memories — see what you were listening to 1, 2, 3+ years ago.**
 
@@ -6,10 +6,10 @@ Like Snapchat Memories, but for your Spotify listening history. Get a daily flas
 
 ## Features
 
-- 📅 **On This Day** — See what you were playing on today's date in previous years
-- 🎲 **Random Flashback** — Jump to a random day in your listening history
-- 📊 **Mood Analysis** — See how your music taste has evolved over time
-- 🔄 **Auto-Collection** — Continuously logs your listening for future memories
+- **On This Day** — See what you were playing on today's date in previous years
+- **Random Flashback** — Jump to a random day in your listening history
+- **Mood Analysis** — See how your music taste has evolved over time
+- **Auto-Collection** — Continuously logs your listening for future memories
 
 ## Quick Start
 
