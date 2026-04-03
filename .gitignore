@@ -1,0 +1,30 @@
+# Secrets - NEVER commit these
+.env
+config/.env
+.spotify_cache
+
+# Data files
+data/*.db
+data/*.json
+data/*.csv
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+venv/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
