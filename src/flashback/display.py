@@ -68,12 +68,36 @@ def _display_album_art(url: str) -> None:
         pass  # Silently skip if art can't be displayed
 
 
-def _play_on_spotify(track_uri: str, sp) -> None:
-    """Start playing a track on the user's active Spotify device."""
+def _play_on_spotify(track_uri: str, sp) -> bool:
+    """Start playing a track on the user's active Spotify device.
+
+    If no device is currently active, picks the first available device
+    and transfers playback to it before playing.
+
+    Returns True if playback started successfully.
+    """
     try:
-        sp.start_playback(uris=[track_uri])
-    except Exception:
-        pass  # No active device, not premium, etc.
+        devices = sp.devices().get("devices", [])
+        if not devices:
+            console.print("[dim]No Spotify devices found. Open Spotify and try again.[/dim]")
+            return False
+
+        active = next((d for d in devices if d["is_active"]), None)
+        device_id = active["id"] if active else devices[0]["id"]
+
+        if not active:
+            sp.transfer_playback(device_id, force_play=False)
+
+        sp.start_playback(device_id=device_id, uris=[track_uri])
+        return True
+    except Exception as e:
+        if "Premium" in str(e):
+            console.print("[dim]Spotify Premium required for playback.[/dim]")
+        elif "No active device" in str(e):
+            console.print("[dim]No Spotify devices found. Open Spotify and try again.[/dim]")
+        else:
+            console.print(f"[dim]Playback failed: {e}[/dim]")
+        return False
 
 
 def _no_memories_panel(message: str) -> None:
@@ -96,10 +120,11 @@ def display_flashback(fb: Flashback | None, title: str = "Your Musical Memory") 
     track = fb.track
 
     # Start playback on Spotify
+    playing = False
     if track.spotify_track_uri:
         from src.auth.spotify_auth import get_spotify_client
         sp = get_spotify_client()
-        _play_on_spotify(track.spotify_track_uri, sp)
+        playing = _play_on_spotify(track.spotify_track_uri, sp)
 
     console.print()
     console.print(Text(title, style="bold magenta", justify="center"))
@@ -137,7 +162,7 @@ def display_flashback(fb: Flashback | None, title: str = "Your Musical Memory") 
         f"Played {track.play_count}x \u2022 {_format_duration(track.total_ms_played)} total",
         style="dim",
     )
-    if track.spotify_track_uri:
+    if track.spotify_track_uri and playing:
         info_lines.append("\n")
         info_lines.append("Now playing on Spotify", style="green italic")
 
