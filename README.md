@@ -56,6 +56,3 @@ Both feed into a local SQLite database that the flashback engine queries.
 - [Rich](https://rich.readthedocs.io/) — Beautiful terminal output
 - [Click](https://click.palletsprojects.com/) — CLI framework
 
-## License
-
-MIT
